@@ -185,10 +185,10 @@ export default function HomeDashboard({ balance, onSubmit }) {
       <img src="/brand/pollen-sphere.png" alt="" className="absolute pointer-events-none select-none hidden md:block" style={{ top: "4%", left: "32%", width: 44, opacity: 0.12, filter: "blur(1.5px)" }} />
       {/* eslint-enable @next/next/no-img-element */}
 
-      <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-8 py-8 flex flex-col gap-7">
+      <div className="relative z-10 w-full px-5 md:px-8 xl:px-10 py-8 flex flex-col gap-7">
         {/* ── Hero ─────────────────────────────────────────────── */}
         <div className="flex flex-col lg:flex-row gap-6">
-          <div className="flex-1 min-w-0 flex flex-col gap-3.5">
+          <div className="flex-1 min-w-0 max-w-2xl flex flex-col gap-3.5">
             <h1 className="font-[Manrope,Inter,sans-serif] font-extrabold text-[38px] sm:text-[48px] leading-[1.08] text-white">
               Создавай
               <br />
@@ -253,8 +253,8 @@ export default function HomeDashboard({ balance, onSubmit }) {
             </div>
           </div>
 
-          {/* Pollen balance card */}
-          <div className="lg:w-[210px] flex-none">
+          {/* Pollen balance card — pinned to the right edge, like the mockup's credit-stack */}
+          <div className="lg:w-[210px] flex-none lg:ml-auto">
             <div className="rounded-2xl p-3.5 bg-black/40 backdrop-blur-xl border border-white/[0.12] flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
