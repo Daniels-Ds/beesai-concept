@@ -712,9 +712,16 @@ export default function StandaloneShell() {
         </div>
       )}
 
-      {/* Header */}
+      {/* Header — transparent and without the pollen pill on Главная, since
+          that page already shows its own balance card front and center. */}
       {isHeaderVisible && (
-        <header className="flex-shrink-0 h-14 border-b border-white/[0.05] flex items-center justify-between px-4 bg-[#0a0a0b]/80 backdrop-blur-md z-50 gap-4">
+        <header
+          className={`flex-shrink-0 h-14 flex items-center justify-between px-4 z-50 gap-4 transition-colors ${
+            activeTab === 'home'
+              ? 'bg-transparent border-b border-transparent'
+              : 'border-b border-white/[0.05] bg-[#0a0a0b]/80 backdrop-blur-md'
+          }`}
+        >
           {/* Left: Mobile menu toggle + Logo + Desktop Sidebar Toggle */}
           <div className="flex items-center gap-3">
             {/* Mobile drawer toggle */}
@@ -774,22 +781,24 @@ export default function StandaloneShell() {
 
           {/* Right: Actions */}
           <div className="flex-shrink-0 flex items-center gap-2.5">
-            {/* Pollen balance pill */}
-            <div className="flex items-center gap-2 bg-white/5 pl-2 pr-3 py-1.5 rounded-full border border-white/5 transition-colors" title="Баланс пыльцы">
-              <svg width="15" height="15" viewBox="0 0 24 24" className="text-[#F4A600] flex-none">
-                <circle cx="12" cy="12" r="6.5" fill="currentColor" />
-                {Array.from({ length: 12 }).map((_, i) => {
-                  const a = (i / 12) * Math.PI * 2;
-                  const x1 = 12 + Math.cos(a) * 7.2, y1 = 12 + Math.sin(a) * 7.2;
-                  const x2 = 12 + Math.cos(a) * 10.5, y2 = 12 + Math.sin(a) * 10.5;
-                  return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />;
-                })}
-              </svg>
-              <span className="text-xs font-bold text-white/90">
-                {balance !== null ? `${balance}` : '---'}
-              </span>
-              <span className="text-[10px] text-white/40 font-medium">Пыльцы</span>
-            </div>
+            {/* Pollen balance pill — hidden on Главная, which shows its own balance card */}
+            {activeTab !== 'home' && (
+              <div className="flex items-center gap-2 bg-white/5 pl-2 pr-3 py-1.5 rounded-full border border-white/5 transition-colors" title="Баланс пыльцы">
+                <svg width="15" height="15" viewBox="0 0 24 24" className="text-[#F4A600] flex-none">
+                  <circle cx="12" cy="12" r="6.5" fill="currentColor" />
+                  {Array.from({ length: 12 }).map((_, i) => {
+                    const a = (i / 12) * Math.PI * 2;
+                    const x1 = 12 + Math.cos(a) * 7.2, y1 = 12 + Math.sin(a) * 7.2;
+                    const x2 = 12 + Math.cos(a) * 10.5, y2 = 12 + Math.sin(a) * 10.5;
+                    return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />;
+                  })}
+                </svg>
+                <span className="text-xs font-bold text-white/90">
+                  {balance !== null ? `${balance}` : '---'}
+                </span>
+                <span className="text-[10px] text-white/40 font-medium">Пыльцы</span>
+              </div>
+            )}
 
             {/* Notifications */}
             <button
