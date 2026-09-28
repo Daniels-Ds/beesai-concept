@@ -143,14 +143,36 @@ export default function HomeDashboard({ balance, onSubmit }) {
     setActiveFormat(FORMAT_CHIPS[0]);
   };
 
+  const heroMaskImage =
+    "linear-gradient(to left, black 40%, transparent 92%), linear-gradient(to bottom, black 45%, transparent 92%)";
+
   return (
     <div className="relative h-full w-full overflow-y-auto custom-scrollbar bg-[#08070a]">
+      {/* Hero mascot photo, top-right, faded into the dark background — same
+          soft dual-edge mask as the approved mockup's .bg-img treatment. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/home-hero-mascot.jpg"
+        alt=""
+        className="absolute top-0 right-0 pointer-events-none select-none"
+        style={{
+          width: "78%",
+          height: "68%",
+          objectFit: "cover",
+          objectPosition: "62% 10%",
+          WebkitMaskImage: heroMaskImage,
+          maskImage: heroMaskImage,
+          WebkitMaskComposite: "source-in, source-in",
+          maskComposite: "intersect",
+        }}
+      />
       {/* Ambient brand glow + vignette, matching the mockup's layered dark background */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 820px 520px at 86% -8%, rgba(124,58,237,0.22), transparent 62%), " +
+            "linear-gradient(180deg, rgba(5,4,7,0.32) 0%, rgba(5,4,7,0.4) 38%, rgba(5,4,7,0.8) 78%, rgba(5,4,7,0.96) 100%), " +
+            "radial-gradient(ellipse 820px 520px at 86% -8%, rgba(124,58,237,0.18), transparent 62%), " +
             "radial-gradient(ellipse 620px 420px at 2% 4%, rgba(244,166,0,0.13), transparent 65%), " +
             "radial-gradient(ellipse 700px 500px at 50% 115%, rgba(109,40,217,0.14), transparent 60%)",
         }}
