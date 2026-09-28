@@ -759,7 +759,7 @@ export default function StandaloneShell() {
 
             {/* Logo & Title */}
             <div className="flex items-center gap-2.5">
-              <img src="/brand/bees-logo-full.png" alt="Beesai" className="h-8 w-auto object-contain hidden sm:block" />
+              <img src="/brand/bees-logo-full-dark.png" alt="Beesai" className="h-8 w-auto object-contain hidden sm:block" />
               <img src="/brand/bees-mark.png" alt="Beesai" className="w-8 h-8 object-contain sm:hidden" />
             </div>
           </div>

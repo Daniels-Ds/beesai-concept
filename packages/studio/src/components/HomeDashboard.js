@@ -3,8 +3,31 @@
 import { useMemo, useState } from "react";
 import { imageModelPickerEntries } from "../modelFamilies.js";
 
-// Reuses the same provider-logo set ImageStudio's model picker draws from —
-// real assets already served from muapi's CDN, no placeholder imagery.
+// Small brand-toned "photo" tiles per provider (generated in-house — see
+// public/models/providers), so each model card carries a real thumbnail
+// image like the approved mockup instead of a flat logo chip. Falls back to
+// the shared muapi provider-logo badge for anything not covered.
+const PROVIDER_PHOTOS = {
+  alibaba: "/models/providers/alibaba.jpg",
+  bytedance: "/models/providers/bytedance.jpg",
+  google: "/models/providers/google.jpg",
+  kling: "/models/providers/kling.jpg",
+  blackforest: "/models/providers/blackforest.jpg",
+  grok: "/models/providers/grok.jpg",
+  midjourney: "/models/providers/midjourney.jpg",
+  runway: "/models/providers/runway.jpg",
+  ideogram: "/models/providers/ideogram.jpg",
+  openai: "/models/providers/openai.jpg",
+  minimax: "/models/providers/minimax.jpg",
+  vidu: "/models/providers/vidu.jpg",
+  reve: "/models/providers/reve.jpg",
+  hunyuan: "/models/providers/hunyuan.jpg",
+  stability: "/models/providers/stability.jpg",
+  luma: "/models/providers/luma.jpg",
+  leonardoai: "/models/providers/leonardoai.jpg",
+  muapi: "/models/providers/muapi.jpg",
+};
+
 const PROVIDER_LOGOS = {
   openai: "https://cdn.muapi.ai/models/openai.png",
   google: "https://cdn.muapi.ai/models/gemini.png",
@@ -111,6 +134,7 @@ function PollenIcon({ className }) {
 
 function ModelCard({ entry, isSelected, onSelect }) {
   const provider = entry.family?.provider;
+  const photo = PROVIDER_PHOTOS[provider];
   const logo = PROVIDER_LOGOS[provider];
   return (
     <button
@@ -122,14 +146,22 @@ function ModelCard({ entry, isSelected, onSelect }) {
           : "bg-black/30 border-white/[0.1] hover:border-white/20 hover:bg-black/40"
         }`}
     >
-      <div className="w-8 h-8 rounded-[9px] flex-none overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#F4A600]/70 to-[#682DA8]/80">
-        {logo ? (
+      <div className="w-9 h-9 rounded-[9px] flex-none overflow-hidden relative bg-gradient-to-br from-[#F4A600]/40 to-[#682DA8]/60">
+        {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={logo} alt="" className="w-5 h-5 object-contain" />
+          <img src={photo} alt="" className="w-full h-full object-cover" />
         ) : (
-          <span className="text-[11px] font-extrabold text-white">
+          <span className="absolute inset-0 flex items-center justify-center text-[12px] font-extrabold text-white">
             {entry.name.charAt(0)}
           </span>
+        )}
+        {logo && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={logo}
+            alt=""
+            className="absolute bottom-0 right-0 w-3.5 h-3.5 object-contain rounded-sm bg-black/50 p-[1px]"
+          />
         )}
       </div>
       <div className="min-w-0 flex-1">
@@ -353,6 +385,16 @@ export default function HomeDashboard({ balance, onSubmit }) {
               Перейти на PRO
             </button>
           </div>
+        </div>
+
+        {/* ── Footer ───────────────────────────────────────────── */}
+        <div className="flex items-center justify-between gap-3 rounded-2xl px-5 h-[46px] bg-black/30 backdrop-blur-md border border-white/[0.08] text-[10.5px] text-white/40 tracking-wide flex-wrap">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/bees-logo-full-dark.png" alt="Beesai" className="h-4 w-auto object-contain opacity-90" />
+          <span className="hidden sm:inline text-center flex-1">
+            AI TOOLS · CREATIVE PEOPLE · REAL RESULTS &nbsp;·&nbsp; MADE FOR A BRIGHTER WORLD
+          </span>
+          <span className="font-bold text-white/70 whitespace-nowrap">Let&apos;s Create ♡</span>
         </div>
       </div>
     </div>
