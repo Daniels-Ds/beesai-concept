@@ -185,7 +185,7 @@ export default function HomeDashboard({ balance, onSubmit }) {
       <img src="/brand/pollen-sphere.png" alt="" className="absolute pointer-events-none select-none hidden md:block" style={{ top: "4%", left: "32%", width: 44, opacity: 0.12, filter: "blur(1.5px)" }} />
       {/* eslint-enable @next/next/no-img-element */}
 
-      <div className="relative z-10 w-full px-5 md:px-8 xl:px-10 py-8 flex flex-col gap-7">
+      <div className="relative z-10 w-full min-h-full px-5 md:px-8 xl:px-10 py-8 flex flex-col gap-7">
         {/* ── Hero ─────────────────────────────────────────────── */}
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="flex-1 min-w-0 max-w-2xl flex flex-col gap-3.5">
@@ -360,8 +360,8 @@ export default function HomeDashboard({ balance, onSubmit }) {
           </div>
         </div>
 
-        {/* ── Footer ───────────────────────────────────────────── */}
-        <div className="flex items-center justify-between gap-3 rounded-2xl px-5 h-[46px] bg-black/30 backdrop-blur-md border border-white/[0.08] text-[10.5px] text-white/40 tracking-wide flex-wrap">
+        {/* ── Footer — pinned to the bottom of the viewport when content is short ── */}
+        <div className="mt-auto flex items-center justify-between gap-3 rounded-2xl px-5 h-[46px] bg-black/30 backdrop-blur-md border border-white/[0.08] text-[10.5px] text-white/40 tracking-wide flex-wrap">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/brand/bees-logo-full-dark.png" alt="Beesai" className="h-4 w-auto object-contain opacity-90" />
           <span className="hidden sm:inline text-center flex-1">
