@@ -28,34 +28,6 @@ const PROVIDER_PHOTOS = {
   muapi: "/models/providers/muapi.jpg",
 };
 
-const PROVIDER_LOGOS = {
-  openai: "https://cdn.muapi.ai/models/openai.png",
-  google: "https://cdn.muapi.ai/models/gemini.png",
-  kling: "https://cdn.muapi.ai/models/kling.png",
-  alibaba: "https://cdn.muapi.ai/models/alibaba.png",
-  bytedance: "https://cdn.muapi.ai/models/bytedance.png",
-  blackforest: "https://cdn.muapi.ai/models/bfl.png",
-  minimax: "https://cdn.muapi.ai/models/minimax.png",
-  suno: "https://cdn.muapi.ai/models/suno.png",
-  anthropic: "https://cdn.muapi.ai/models/claude.png",
-  meshy: "https://cdn.muapi.ai/models/meshy-3.png",
-  tripo3d: "https://cdn.muapi.ai/models/tripo3d.png",
-  grok: "https://cdn.muapi.ai/models/xai.png",
-  muapi: "https://cdn.muapi.ai/models/muapi.png",
-  midjourney: "https://cdn.muapi.ai/models/midjourney.png",
-  vidu: "https://cdn.muapi.ai/models/vidu.png",
-  runway: "https://cdn.muapi.ai/models/runway.png",
-  luma: "https://cdn.muapi.ai/models/luma.png",
-  ideogram: "https://cdn.muapi.ai/models/ideogram.png",
-  leonardoai: "https://cdn.muapi.ai/models/leonardoai.png",
-  hunyuan: "https://cdn.muapi.ai/models/hunyuan.png",
-  hidream: "https://cdn.muapi.ai/models/hidream.png",
-  lightricks: "https://cdn.muapi.ai/models/lightricks.png",
-  pixverse: "https://cdn.muapi.ai/models/pixverse.png",
-  reve: "https://cdn.muapi.ai/models/reve.png",
-  stability: "https://cdn.muapi.ai/models/stability.png",
-};
-
 const FORMAT_CHIPS = [
   {
     id: "image",
@@ -105,68 +77,32 @@ const FORMAT_CHIPS = [
   },
 ];
 
-function PollenIcon({ className }) {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" className={className}>
-      <circle cx="12" cy="12" r="6.5" fill="currentColor" />
-      {Array.from({ length: 12 }).map((_, i) => {
-        const a = (i / 12) * Math.PI * 2;
-        const x1 = 12 + Math.cos(a) * 7.2,
-          y1 = 12 + Math.sin(a) * 7.2;
-        const x2 = 12 + Math.cos(a) * 10.5,
-          y2 = 12 + Math.sin(a) * 10.5;
-        return (
-          <line
-            key={i}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
-        );
-      })}
-    </svg>
-  );
-}
-
 function ModelCard({ entry, isSelected, onSelect }) {
   const provider = entry.family?.provider;
   const photo = PROVIDER_PHOTOS[provider];
-  const logo = PROVIDER_LOGOS[provider];
   return (
     <button
       type="button"
       onClick={() => onSelect(entry)}
-      className={`flex-1 min-w-[150px] flex items-center gap-2.5 rounded-[13px] px-3 py-2.5 text-left transition-colors border backdrop-blur-md
+      className={`flex-1 min-w-[180px] flex items-center gap-3 rounded-[14px] pl-2.5 pr-3.5 py-2.5 text-left transition-colors border backdrop-blur-md
         ${isSelected
           ? "bg-[#7C3AED]/18 border-[#9D5CF0]/50"
           : "bg-black/30 border-white/[0.1] hover:border-white/20 hover:bg-black/40"
         }`}
     >
-      <div className="w-9 h-9 rounded-[9px] flex-none overflow-hidden relative bg-gradient-to-br from-[#F4A600]/40 to-[#682DA8]/60">
+      <div className="w-11 h-11 rounded-[10px] flex-none overflow-hidden relative bg-gradient-to-br from-[#F4A600]/40 to-[#682DA8]/60">
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={photo} alt="" className="w-full h-full object-cover" />
         ) : (
-          <span className="absolute inset-0 flex items-center justify-center text-[12px] font-extrabold text-white">
+          <span className="absolute inset-0 flex items-center justify-center text-[13px] font-extrabold text-white">
             {entry.name.charAt(0)}
           </span>
         )}
-        {logo && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={logo}
-            alt=""
-            className="absolute bottom-0 right-0 w-3.5 h-3.5 object-contain rounded-sm bg-black/50 p-[1px]"
-          />
-        )}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="text-[11.5px] font-bold text-white truncate">{entry.name}</div>
-        <div className="text-[9.5px] text-white/40 truncate">
+        <div className="text-[12.5px] font-bold text-white truncate">{entry.name}</div>
+        <div className="text-[10px] text-white/40 truncate">
           {entry.family?.provider_name || "Muapi"}
         </div>
       </div>
@@ -208,15 +144,24 @@ export default function HomeDashboard({ balance, onSubmit }) {
   };
 
   return (
-    <div className="relative h-full w-full overflow-y-auto custom-scrollbar bg-[#050506]">
-      {/* Ambient brand glow, consistent with the other studio surfaces */}
+    <div className="relative h-full w-full overflow-y-auto custom-scrollbar bg-[#08070a]">
+      {/* Ambient brand glow + vignette, matching the mockup's layered dark background */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-70"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 720px 460px at 82% -6%, rgba(124,58,237,0.16), transparent 62%), radial-gradient(ellipse 520px 360px at 4% 6%, rgba(244,166,0,0.10), transparent 65%)",
+            "radial-gradient(ellipse 820px 520px at 86% -8%, rgba(124,58,237,0.22), transparent 62%), " +
+            "radial-gradient(ellipse 620px 420px at 2% 4%, rgba(244,166,0,0.13), transparent 65%), " +
+            "radial-gradient(ellipse 700px 500px at 50% 115%, rgba(109,40,217,0.14), transparent 60%)",
         }}
       />
+      {/* Scattered pollen-sphere decor, echoing the mockup's floating dust motes */}
+      {/* eslint-disable @next/next/no-img-element */}
+      <img src="/brand/pollen-sphere.png" alt="" className="absolute pointer-events-none select-none" style={{ top: "58%", left: "2%", width: 130, opacity: 0.16, filter: "blur(3px)" }} />
+      <img src="/brand/pollen-sphere.png" alt="" className="absolute pointer-events-none select-none" style={{ top: "10%", left: "1%", width: 60, opacity: 0.14, filter: "blur(2px)" }} />
+      <img src="/brand/pollen-sphere.png" alt="" className="absolute pointer-events-none select-none" style={{ top: "78%", left: "20%", width: 170, opacity: 0.13, filter: "blur(4px)" }} />
+      <img src="/brand/pollen-sphere.png" alt="" className="absolute pointer-events-none select-none hidden md:block" style={{ top: "4%", left: "32%", width: 44, opacity: 0.12, filter: "blur(1.5px)" }} />
+      {/* eslint-enable @next/next/no-img-element */}
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-8 py-8 flex flex-col gap-7">
         {/* ── Hero ─────────────────────────────────────────────── */}
@@ -289,7 +234,13 @@ export default function HomeDashboard({ balance, onSubmit }) {
           {/* Pollen balance card */}
           <div className="lg:w-[210px] flex-none">
             <div className="rounded-2xl p-3.5 bg-black/40 backdrop-blur-xl border border-white/[0.12] flex items-center gap-3">
-              <PollenIcon className="text-[#F4A600] w-8 h-8 flex-none drop-shadow-[0_2px_6px_rgba(253,166,0,0.4)]" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/brand/pollen-sphere.png"
+                alt=""
+                className="w-8 h-8 flex-none object-contain"
+                style={{ filter: "drop-shadow(0 2px 6px rgba(253,166,0,0.4))" }}
+              />
               <div className="flex-1 min-w-0">
                 <div className="font-[Manrope,Inter,sans-serif] font-extrabold text-[16px] text-white leading-tight">
                   {balance !== null && balance !== undefined ? balance : "---"}
