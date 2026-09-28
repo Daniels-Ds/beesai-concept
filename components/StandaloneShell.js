@@ -1017,19 +1017,15 @@ export default function StandaloneShell() {
 
             {(!isSidebarCollapsed || isMobileOpen) && (
               <div className="flex-shrink-0 p-2">
-                <div className="relative overflow-hidden rounded-2xl p-3.5 flex flex-col gap-2.5 bg-gradient-to-br from-[#131018] to-[#0c0a10] border border-white/[0.08]">
+                <div className="relative overflow-hidden rounded-2xl p-3.5 flex flex-col gap-1.5 bg-gradient-to-br from-[#131018] to-[#0c0a10] border border-white/[0.08]">
                   <div className="absolute -top-9 -right-11 w-[130px] h-[130px] rounded-full"
                        style={{ background: 'radial-gradient(circle, rgba(244,166,0,0.5), rgba(244,166,0,0.18) 55%, transparent 72%)' }} />
                   <p className="relative font-extrabold text-[13px] leading-snug text-white">
                     Твой контент может <span className="text-[#C9A8F0]">больше</span> с Bees AI
                   </p>
-                  <div className="relative flex items-center gap-2">
-                    <div className="w-[26px] h-[26px] rounded-full border-[1.5px] border-dashed border-[#9D5CF0] text-[#C9A8F0] flex items-center justify-center text-xs">+</div>
-                    <span className="text-[10.5px] text-white/40">Пока никого нет</span>
-                  </div>
-                  <button className="relative text-[11.5px] font-semibold text-white/80 bg-[#1c1730] border border-white/[0.08] rounded-[10px] py-2 hover:bg-[#241d3c] transition-colors">
-                    Пригласить команду
-                  </button>
+                  <span className="relative text-[10.5px] font-semibold text-white/40 uppercase tracking-wide">
+                    Совместная работа — в разработке
+                  </span>
                 </div>
               </div>
             )}

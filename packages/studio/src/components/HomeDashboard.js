@@ -313,7 +313,7 @@ export default function HomeDashboard({ balance, onSubmit }) {
             <button
               type="button"
               onClick={handleCreate}
-              className="mt-1 text-[11.5px] font-bold text-white rounded-[10px] px-4.5 py-2.5"
+              className="mt-1 text-[11.5px] font-bold text-white rounded-[10px] px-4 py-2.5"
               style={{
                 background: "linear-gradient(135deg,#6D28D9 0%,#8B2FC9 100%)",
                 boxShadow: "0 0 0 1px rgba(255,255,255,0.06) inset, 0 8px 22px rgba(109,40,217,0.4)",
