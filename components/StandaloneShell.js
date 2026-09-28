@@ -741,12 +741,8 @@ export default function StandaloneShell() {
 
             {/* Logo & Title */}
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 flex items-center justify-center">
-                <img src="/brand/bees-mark.png" alt="Beesai" className="w-8 h-8 object-contain" />
-              </div>
-              <span className="text-sm font-bold tracking-tight hidden sm:block text-white">
-                Beesai
-              </span>
+              <img src="/brand/bees-logo-full.png" alt="Beesai" className="h-8 w-auto object-contain hidden sm:block" />
+              <img src="/brand/bees-mark.png" alt="Beesai" className="w-8 h-8 object-contain sm:hidden" />
             </div>
           </div>
 
@@ -759,24 +755,53 @@ export default function StandaloneShell() {
           </div>
 
           {/* Right: Actions */}
-          <div className="flex-shrink-0 flex items-center gap-3">
-            <div className="flex items-center gap-2.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/5 transition-colors">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <div className="flex-shrink-0 flex items-center gap-2.5">
+            {/* Pollen balance pill */}
+            <div className="flex items-center gap-2 bg-white/5 pl-2 pr-3 py-1.5 rounded-full border border-white/5 transition-colors" title="Баланс пыльцы">
+              <svg width="15" height="15" viewBox="0 0 24 24" className="text-[#F4A600] flex-none">
+                <circle cx="12" cy="12" r="6.5" fill="currentColor" />
+                {Array.from({ length: 12 }).map((_, i) => {
+                  const a = (i / 12) * Math.PI * 2;
+                  const x1 = 12 + Math.cos(a) * 7.2, y1 = 12 + Math.sin(a) * 7.2;
+                  const x2 = 12 + Math.cos(a) * 10.5, y2 = 12 + Math.sin(a) * 10.5;
+                  return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />;
+                })}
+              </svg>
               <span className="text-xs font-bold text-white/90">
-                ${balance !== null ? `${balance}` : '---'}
+                {balance !== null ? `${balance}` : '---'}
               </span>
+              <span className="text-[10px] text-white/40 font-medium">Пыльцы</span>
             </div>
 
+            {/* Notifications */}
+            <button
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/5 text-white/70 hover:text-white transition-colors"
+              aria-label="Уведомления"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 0 1-3.4 0" /></svg>
+            </button>
+
+            {/* Theme toggle (placeholder — dark only for now) */}
+            <button
+              className="w-9 h-9 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 border border-white/5 text-white/70 hover:text-white transition-colors"
+              aria-label="Сменить тему"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="4.2" /><path d="M12 2v2.4M12 19.6V22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2 12h2.4M19.6 12H22M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7" /></svg>
+            </button>
+
+            {/* User profile — placeholder until real account system ships */}
             <button
               onClick={() => setShowSettings(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-white/10 bg-white/5 text-[13px] font-bold text-white/80 hover:text-white hover:bg-white/10 hover:border-white/20 transition-colors"
+              className="flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/5 rounded-full pl-1 pr-3 py-1 transition-colors"
               aria-label="Настройки"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-              </svg>
-              <span className="hidden sm:inline">Настройки</span>
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#F4A600] to-[#682DA8] flex items-center justify-center text-[11px] font-extrabold text-[#0c0c0e] flex-none">
+                С
+              </div>
+              <div className="hidden sm:flex flex-col items-start leading-tight">
+                <span className="text-[12px] font-bold text-white">Сергей</span>
+                <span className="text-[10px] text-white/40">Креативный исследователь</span>
+              </div>
             </button>
           </div>
         </header>
@@ -933,6 +958,25 @@ export default function StandaloneShell() {
                 </div>
               )}
             </nav>
+
+            {(!isSidebarCollapsed || isMobileOpen) && (
+              <div className="flex-shrink-0 p-2">
+                <div className="relative overflow-hidden rounded-2xl p-3.5 flex flex-col gap-2.5 bg-gradient-to-br from-[#131018] to-[#0c0a10] border border-white/[0.08]">
+                  <div className="absolute -top-9 -right-11 w-[130px] h-[130px] rounded-full"
+                       style={{ background: 'radial-gradient(circle, rgba(244,166,0,0.5), rgba(244,166,0,0.18) 55%, transparent 72%)' }} />
+                  <p className="relative font-extrabold text-[13px] leading-snug text-white">
+                    Твой контент может <span className="text-[#C9A8F0]">больше</span> с Bees AI
+                  </p>
+                  <div className="relative flex items-center gap-2">
+                    <div className="w-[26px] h-[26px] rounded-full border-[1.5px] border-dashed border-[#9D5CF0] text-[#C9A8F0] flex items-center justify-center text-xs">+</div>
+                    <span className="text-[10.5px] text-white/40">Пока никого нет</span>
+                  </div>
+                  <button className="relative text-[11.5px] font-semibold text-white/80 bg-[#1c1730] border border-white/[0.08] rounded-[10px] py-2 hover:bg-[#241d3c] transition-colors">
+                    Пригласить команду
+                  </button>
+                </div>
+              </div>
+            )}
           </aside>
         )}
 

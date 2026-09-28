@@ -1412,9 +1412,18 @@ export default function ImageStudio({
   // ── Render ───────────────────────────────────────────────────────────────
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-app-bg relative p-4 md:p-6 overflow-hidden">
-      
+
+      {/* Brand ambience: soft pollen-gold glow, consistent with the rest of the app */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-60"
+        style={{
+          background:
+            "radial-gradient(ellipse 640px 420px at 88% -8%, rgba(244,166,0,0.10), transparent 65%), radial-gradient(ellipse 520px 360px at 6% 108%, rgba(104,45,168,0.14), transparent 65%)",
+        }}
+      />
+
       {/* ── CENTRAL GALLERY AREA ── */}
-      <div className="flex-1 w-full max-w-7xl mx-auto overflow-y-auto custom-scrollbar pb-40 lg:pb-32 px-2">
+      <div className="relative z-10 flex-1 w-full max-w-7xl mx-auto overflow-y-auto custom-scrollbar pb-40 lg:pb-32 px-2">
         {history.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full pt-4 animate-fade-in-up">
             {history.map((entry, idx) => (
