@@ -920,6 +920,9 @@ export default function ImageStudio({
   onGenerationEnd,
   onGenerationComplete,
   onGenerationError,
+  handoffToken,
+  handoffPrompt,
+  handoffModelId,
   historyItems,
   onDeleteHistoryItem,
   droppedFiles,
@@ -1036,6 +1039,27 @@ export default function ImageStudio({
       console.warn("Failed to load ImageStudio persistence:", err);
     }
   }, []);
+
+  // ── Handoff from Home dashboard (prompt / model chosen before navigating here) ──
+  useEffect(() => {
+    if (!handoffToken) return;
+    if (typeof handoffPrompt === "string" && handoffPrompt.length > 0) {
+      setPrompt(handoffPrompt);
+    }
+    if (handoffModelId) {
+      const restoredFamily = imageModelCatalog.familyByVariantId.get(handoffModelId);
+      const restoredVariant = imageModelCatalog.variantById.get(handoffModelId);
+      if (restoredFamily) {
+        setSelectedModelId(handoffModelId);
+        setSelectedFamilyId(restoredFamily.id);
+        setModelParameterValues(createModelParameterValues(restoredVariant?.model));
+      }
+    }
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handoffToken]);
 
   // ── Adjust height on load ────────────────────────────────────────────────
   // ── Persistence: Save ────────────────────────────────────────────────────

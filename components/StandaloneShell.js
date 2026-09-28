@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { ImageStudio, VideoStudio, ClippingStudio, VibeMotionStudio, LipSyncStudio, RecastStudio, CinemaStudio, AudioStudio, MarketingStudio, WorkflowStudio, AgentStudio, AppsStudio, AiInfluencerStudio, LayersStudio, getUserBalance } from 'studio';
+import { ImageStudio, VideoStudio, ClippingStudio, VibeMotionStudio, LipSyncStudio, RecastStudio, CinemaStudio, AudioStudio, MarketingStudio, WorkflowStudio, AgentStudio, AppsStudio, AiInfluencerStudio, LayersStudio, HomeDashboard, getUserBalance } from 'studio';
 
 const DesignAgentStudio = dynamic(() => import('studio').then(mod => mod.DesignAgentStudio), {
   ssr: false,
@@ -13,6 +13,15 @@ import axios from 'axios';
 import ApiKeyModal from './ApiKeyModal';
 
 const TABS = [
+  {
+    id: 'home',
+    label: 'Главная',
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>
+      </svg>
+    )
+  },
   {
     id: 'image',
     label: 'Студия изображений',
@@ -243,6 +252,7 @@ const NAVIGATION_CATEGORIES = [
 ];
 
 const EXPLORE_APPS_TAB = TABS.find((tab) => tab.id === 'apps');
+const HOME_TAB = TABS.find((tab) => tab.id === 'home');
 
 const getNavigationCategory = (tabId) => (
   NAVIGATION_CATEGORIES.find((category) => category.tabIds.includes(tabId))
@@ -309,11 +319,14 @@ export default function StandaloneShell() {
     if (slug.includes('apps')) return 'apps';
     const firstSegment = slug[0];
     if (firstSegment && TABS.find(t => t.id === firstSegment)) return firstSegment;
-    return 'image';
+    return 'home';
   };
-  
+
   const [apiKey, setApiKey] = useState(null);
   const [activeTab, setActiveTab] = useState(getInitialTab());
+  // Prompt/model handed off from the Home dashboard to whichever studio tab
+  // it navigates into (currently wired through to Image Studio).
+  const [homeHandoff, setHomeHandoff] = useState({ token: 0, prompt: '', modelId: null });
 
   const [balance, setBalance] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
@@ -495,6 +508,11 @@ export default function StandaloneShell() {
     window.history.pushState(null, '', `/studio/${tabId}`);
     setActiveTab(tabId);
   }, []);
+
+  const handleHomeSubmit = useCallback((tabId, { prompt, modelId } = {}) => {
+    setHomeHandoff({ token: Date.now(), prompt: prompt || '', modelId: modelId || null });
+    handleTabChange(tabId || 'image');
+  }, [handleTabChange]);
 
   const handleOpenNotification = useCallback((notification) => {
     handleTabChange(notification.tabId);
@@ -827,6 +845,35 @@ export default function StandaloneShell() {
             `}
           >
             <nav aria-label="Навигация по студии" className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none py-2 px-2">
+              {HOME_TAB && (
+                <div className="mb-2">
+                  <a
+                    href={`/studio/${HOME_TAB.id}`}
+                    onClick={(event) => handleNavigationItemClick(event, HOME_TAB.id)}
+                    aria-current={activeTab === HOME_TAB.id ? 'page' : undefined}
+                    aria-label={HOME_TAB.label}
+                    title={isSidebarCollapsed && !isMobileOpen ? HOME_TAB.label : undefined}
+                    className={`
+                      group relative flex items-center rounded-xl transition-all duration-150 text-[13px] font-semibold
+                      ${isSidebarCollapsed && !isMobileOpen ? 'h-11 w-11 justify-center mx-auto' : 'px-3 py-2.5 w-full gap-3'}
+                      ${activeTab === HOME_TAB.id
+                        ? 'bg-gradient-to-r from-[#F4A600]/15 to-purple-500/10 text-[#F4A600] border border-[#F4A600]/20'
+                        : 'text-white/60 hover:text-white hover:bg-white/[0.04] border border-transparent'
+                      }
+                    `}
+                  >
+                    {activeTab === HOME_TAB.id && (
+                      <span className="absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b from-[#F4A600] to-[#682DA8] rounded-r-full" />
+                    )}
+                    <span className={`flex-shrink-0 ${activeTab === HOME_TAB.id ? 'text-[#F4A600]' : 'text-white/50 group-hover:text-white'}`}>
+                      {HOME_TAB.icon}
+                    </span>
+                    {(!isSidebarCollapsed || isMobileOpen) && (
+                      <span className="truncate">{HOME_TAB.label}</span>
+                    )}
+                  </a>
+                </div>
+              )}
               <div className="space-y-1">
                 {NAVIGATION_CATEGORIES.map((category) => {
                   const isCategoryActive = activeCategory?.id === category.id;
@@ -982,8 +1029,13 @@ export default function StandaloneShell() {
 
         {/* Studio Content */}
         <div className="flex-1 min-h-0 h-full relative overflow-hidden bg-[#030303]">
+        <div className={activeTab === 'home' ? "h-full w-full" : "hidden"}>
+          {activeTab === 'home' && (
+            <HomeDashboard balance={balance} onSubmit={handleHomeSubmit} />
+          )}
+        </div>
         <div className={activeTab === 'image' ? "h-full w-full" : "hidden"}>
-          <ImageStudio apiKey={apiKey} droppedFiles={droppedFiles} onFilesHandled={handleFilesHandled} onGenerationStart={makeGenerationStartCallback('image')} onGenerationEnd={makeGenerationEndCallback('image')} onGenerationComplete={makeSuccessCallback('image')} onGenerationError={makeErrorCallback('image')} />
+          <ImageStudio apiKey={apiKey} droppedFiles={droppedFiles} onFilesHandled={handleFilesHandled} onGenerationStart={makeGenerationStartCallback('image')} onGenerationEnd={makeGenerationEndCallback('image')} onGenerationComplete={makeSuccessCallback('image')} onGenerationError={makeErrorCallback('image')} handoffToken={homeHandoff.token} handoffPrompt={homeHandoff.prompt} handoffModelId={homeHandoff.modelId} />
         </div>
         <div className={activeTab === 'layers' ? "h-full w-full" : "hidden"}>
           <LayersStudio apiKey={apiKey} droppedFiles={droppedFiles} onFilesHandled={handleFilesHandled} onGenerationStart={makeGenerationStartCallback('layers')} onGenerationEnd={makeGenerationEndCallback('layers')} onGenerationComplete={makeSuccessCallback('layers')} onGenerationError={makeErrorCallback('layers')} />
